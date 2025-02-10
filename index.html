@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>IT Environment Needs Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f9f9f9;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .category {
+            background: #ffffff;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+
+        .question {
+            margin: 10px 0;
+        }
+
+        .question-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .answers input[type="radio"],
+        .answers input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fafafa;
+            border: 1px solid #ddd;
+        }
+
+        .env-title {
+            color: green;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        .reason {
+            margin-left: 20px;
+            list-style: disc;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .note {
+            color: #d9534f;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Advanced IT Environment Needs Assessment</h1>
+<p>Please answer the questions below. When finished, click <strong>Compute Recommendations</strong>.</p>
+
+<div id="form-container">
+
+    <!-- CATEGORY 1: Purpose & Objectives -->
+    <div class="category">
+        <h2>Category 1: Purpose & Objectives</h2>
+        <!-- 1.1) Project Type -->
+        <div class="question">
+            <label class="question-label">1.1) What type of project/application is this?</label>
+            <div class="answers">
+                <label><input type="radio" name="ProjectType" value="A">Greenfield (brand new) custom development</label><br/>
+                <label><input type="radio" name="ProjectType" value="B">Enhancement/maintenance of existing system</label><br/>
+                <label><input type="radio" name="ProjectType" value="C">Off-the-shelf solution with minor customization</label>
+            </div>
+        </div>
+
+        <!-- 1.2) Release Methodology -->
+        <div class="question">
+            <label class="question-label">1.2) What is your release methodology?</label>
+            <div class="answers">
+                <label><input type="radio" name="ReleaseMethod" value="A">Traditional (infrequent, large releases)</label><br/>
+                <label><input type="radio" name="ReleaseMethod" value="B">Agile (frequent, smaller releases)</label><br/>
+                <label><input type="radio" name="ReleaseMethod" value="C">Continuous Deployment (multiple releases per day)</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 2: Stakeholders & Usage -->
+    <div class="category">
+        <h2>Category 2: Stakeholders & Usage</h2>
+        <!-- 2.1) Stakeholders for Testing -->
+        <div class="question">
+            <label class="question-label">2.1) Who are the main stakeholders for testing new features?</label>
+            <div class="answers">
+                <label><input type="radio" name="TestStakeholders" value="A">Only the dev team</label><br/>
+                <label><input type="radio" name="TestStakeholders" value="B">A dedicated QA/test team</label><br/>
+                <label><input type="radio" name="TestStakeholders" value="C">Both QA team + business/end users</label>
+            </div>
+        </div>
+
+        <!-- 2.2) Client Integration? -->
+        <div class="question">
+            <label class="question-label">2.2) Do you have external clients or partners who need their own integration testing environment?</label>
+            <div class="answers">
+                <label><input type="radio" name="HasClientIntegration" value="yes">Yes</label><br/>
+                <label><input type="radio" name="HasClientIntegration" value="no">No</label>
+            </div>
+        </div>
+
+        <!-- 2.3) NumberOfClients (conditional) -->
+        <div class="question" id="client-num-question" class="hidden">
+            <label class="question-label">2.3) How many external clients require integration testing?</label>
+            <div class="answers">
+                <label><input type="radio" name="NumberOfClients" value="A">1-5</label><br/>
+                <label><input type="radio" name="NumberOfClients" value="B">6-20</label><br/>
+                <label><input type="radio" name="NumberOfClients" value="C">More than 20</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 3: Data Management -->
+    <div class="category">
+        <h2>Category 3: Data Management</h2>
+        <!-- 3.1) Data Usage -->
+        <div class="question">
+            <label class="question-label">3.1) What type of data do you plan to use in non-production environments?</label>
+            <div class="answers">
+                <label><input type="radio" name="DataUsage" value="A">Synthetic or dummy data only</label><br/>
+                <label><input type="radio" name="DataUsage" value="B">Partial copy of production data (masked)</label><br/>
+                <label><input type="radio" name="DataUsage" value="C">Full copy of production data (unmasked)</label>
+            </div>
+        </div>
+
+        <!-- 3.2) Sensitive Data? -->
+        <div class="question">
+            <label class="question-label">3.2) Does your application store or process regulated/sensitive data (PII, PCI, HIPAA, GDPR)?</label>
+            <div class="answers">
+                <label><input type="radio" name="HasSensitiveData" value="yes">Yes</label><br/>
+                <label><input type="radio" name="HasSensitiveData" value="no">No</label>
+            </div>
+        </div>
+
+        <!-- 3.3) ComplianceType (conditional) -->
+        <div class="question" id="compliance-question" class="hidden">
+            <label class="question-label">3.3) Which compliance standards are most relevant?</label>
+            <div class="answers">
+                <label><input type="radio" name="ComplianceType" value="A">GDPR</label><br/>
+                <label><input type="radio" name="ComplianceType" value="B">PCI-DSS</label><br/>
+                <label><input type="radio" name="ComplianceType" value="C">HIPAA</label><br/>
+                <label><input type="radio" name="ComplianceType" value="D">Multiple/Other</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 4: Infrastructure & Configuration -->
+    <div class="category">
+        <h2>Category 4: Infrastructure & Configuration</h2>
+        <!-- 4.1) Infra Similarity -->
+        <div class="question">
+            <label class="question-label">4.1) How similar do non-production environments need to be to Production?</label>
+            <div class="answers">
+                <label><input type="radio" name="InfraSimilarity" value="A">Basic functional similarity is enough</label><br/>
+                <label><input type="radio" name="InfraSimilarity" value="B">We need near-identical environment for final testing</label><br/>
+                <label><input type="radio" name="InfraSimilarity" value="C">We only need partial similarity (e.g., scaled-down servers)</label>
+            </div>
+        </div>
+
+        <!-- 4.2) Hosting -->
+        <div class="question">
+            <label class="question-label">4.2) Where are you hosting your application?</label>
+            <div class="answers">
+                <label><input type="radio" name="Hosting" value="A">On-premise servers</label><br/>
+                <label><input type="radio" name="Hosting" value="B">Public cloud (AWS, Azure, GCP, etc.)</label><br/>
+                <label><input type="radio" name="Hosting" value="C">Hybrid or multi-cloud</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 5: Processes & Deployment Pipelines -->
+    <div class="category">
+        <h2>Category 5: Processes & Deployment Pipelines</h2>
+        <div class="question">
+            <label class="question-label">5.1) Do you plan to have automated CI builds?</label>
+            <div class="answers">
+                <label><input type="radio" name="AutomatedBuilds" value="yes">Yes</label><br/>
+                <label><input type="radio" name="AutomatedBuilds" value="no">No</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">5.2) Will you have automated testing pipelines (unit/integration/regression)?</label>
+            <div class="answers">
+                <label><input type="radio" name="AutomatedTests" value="yes">Yes</label><br/>
+                <label><input type="radio" name="AutomatedTests" value="no">No</label>
+            </div>
+        </div>
+
+        <div class="question" id="test-frequency-question" class="hidden">
+            <label class="question-label">5.3) How frequently will these automated tests run?</label>
+            <div class="answers">
+                <label><input type="radio" name="TestFrequency" value="A">On every commit (continuous testing)</label><br/>
+                <label><input type="radio" name="TestFrequency" value="B">Nightly builds</label><br/>
+                <label><input type="radio" name="TestFrequency" value="C">Weekly or on-demand only</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 6: Governance & Security -->
+    <div class="category">
+        <h2>Category 6: Governance & Security</h2>
+        <div class="question">
+            <label class="question-label">6.1) Should there be strict access controls (limiting dev/tester access to certain environments)?</label>
+            <div class="answers">
+                <label><input type="radio" name="RestrictedAccess" value="yes">Yes</label><br/>
+                <label><input type="radio" name="RestrictedAccess" value="no">No</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">6.2) Do you have regulatory/audit requirements that dictate environment isolation or logging?</label>
+            <div class="answers">
+                <label><input type="radio" name="AuditRequirements" value="yes">Yes</label><br/>
+                <label><input type="radio" name="AuditRequirements" value="no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 7: Cost & Resource Optimization -->
+    <div class="category">
+        <h2>Category 7: Cost & Resource Optimization</h2>
+        <div class="question">
+            <label class="question-label">7.1) Is your organization highly cost-sensitive (fewer, consolidated environments)?</label>
+            <div class="answers">
+                <label><input type="radio" name="CostSensitive" value="yes">Yes</label><br/>
+                <label><input type="radio" name="CostSensitive" value="no">No</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">7.2) Are you open to spinning up on-demand environments (ephemeral) for testing, then shutting them down?</label>
+            <div class="answers">
+                <label><input type="radio" name="OnDemandEnvs" value="yes">Yes</label><br/>
+                <label><input type="radio" name="OnDemandEnvs" value="no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 8: Monitoring & Maintenance -->
+    <div class="category">
+        <h2>Category 8: Monitoring & Maintenance</h2>
+        <div class="question">
+            <label class="question-label">8.1) Which monitoring strategy do you prefer for non-prod environments?</label>
+            <div class="answers">
+                <label><input type="radio" name="NonProdMonitoring" value="A">Minimal logging only</label><br/>
+                <label><input type="radio" name="NonProdMonitoring" value="B">Full application monitoring and alerts (similar to Production)</label><br/>
+                <label><input type="radio" name="NonProdMonitoring" value="C">Something in between</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">8.2) Do you have a scheduled maintenance window for patching non-prod environments (e.g., monthly)?</label>
+            <div class="answers">
+                <label><input type="radio" name="MaintenanceSchedule" value="yes">Yes</label><br/>
+                <label><input type="radio" name="MaintenanceSchedule" value="no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 9: Risk Management -->
+    <div class="category">
+        <h2>Category 9: Risk Management</h2>
+        <div class="question">
+            <label class="question-label">9.1) Is your application mission-critical (production failures are highly risky)?</label>
+            <div class="answers">
+                <label><input type="radio" name="MissionCritical" value="yes">Yes</label><br/>
+                <label><input type="radio" name="MissionCritical" value="no">No</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">9.2) Do you need a robust rollback strategy that includes testing upgrades in a staging/pre-prod environment first?</label>
+            <div class="answers">
+                <label><input type="radio" name="RollbackPlan" value="yes">Yes</label><br/>
+                <label><input type="radio" name="RollbackPlan" value="no">No</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 10: Success Measures -->
+    <div class="category">
+        <h2>Category 10: Success Measures</h2>
+        <div class="question">
+            <label class="question-label">10.1) What is your target release cadence for Production?</label>
+            <div class="answers">
+                <label><input type="radio" name="ReleaseCadence" value="A">Weekly</label><br/>
+                <label><input type="radio" name="ReleaseCadence" value="B">Bi-Weekly</label><br/>
+                <label><input type="radio" name="ReleaseCadence" value="C">Monthly</label><br/>
+                <label><input type="radio" name="ReleaseCadence" value="D">On-Demand / Continuous</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <label class="question-label">10.2) How tolerant is the business towards production defects?</label>
+            <div class="answers">
+                <label><input type="radio" name="DefectTolerance" value="A">Low tolerance (critical issues must be prevented)</label><br/>
+                <label><input type="radio" name="DefectTolerance" value="B">Moderate tolerance (some minor bugs acceptable)</label><br/>
+                <label><input type="radio" name="DefectTolerance" value="C">Higher tolerance (fast-paced dev is priority)</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY 11: Testing Requirements -->
+    <div class="category">
+        <h2>Category 11: Testing Requirements</h2>
+        <!-- Functional Testing -->
+        <div class="question">
+            <label class="question-label">11.1) Which functional testing approach do you plan to perform?</label>
+            <div class="answers">
+                <label><input type="radio" name="FunctionalTesting" value="A">Minimal functional testing (ad-hoc or smoke tests)</label><br/>
+                <label><input type="radio" name="FunctionalTesting" value="B">Regression testing only (test existing functionality)</label><br/>
+                <label><input type="radio" name="FunctionalTesting" value="C">Both regression & progression testing</label><br/>
+                <label><input type="radio" name="FunctionalTesting" value="D">No dedicated functional testing</label>
+            </div>
+        </div>
+
+        <!-- Non-Functional Testing -->
+        <div class="question">
+            <label class="question-label">11.2) Which non-functional testing do you plan? (Choose the primary focus)</label>
+            <div class="answers">
+                <label><input type="radio" name="NonFunctionalTesting" value="A">None</label><br/>
+                <label><input type="radio" name="NonFunctionalTesting" value="B">Performance testing (load/stress)</label><br/>
+                <label><input type="radio" name="NonFunctionalTesting" value="C">Soak testing (long-duration tests)</label><br/>
+                <label><input type="radio" name="NonFunctionalTesting" value="D">Security/penetration testing</label><br/>
+                <label><input type="radio" name="NonFunctionalTesting" value="E">Multiple (Performance + Soak or Security)</label><br/>
+                <label><input type="radio" name="NonFunctionalTesting" value="F">All of the above (Performance, Soak, Security)</label>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="computeRecommendations()">Compute Recommendations</button>
+</div>
+
+<div id="results" class="hidden"></div>
+
+<script>
+    // Show/hide certain questions dynamically
+    // (e.g., if user says "Yes" to HasClientIntegration, show #client-num-question)
+    document.addEventListener('change', function(e) {
+        if(e.target.name === 'HasClientIntegration') {
+            const clientNumQ = document.getElementById('client-num-question');
+            if(e.target.value === 'yes') {
+                clientNumQ.classList.remove('hidden');
+            } else {
+                clientNumQ.classList.add('hidden');
+            }
+        }
+        if(e.target.name === 'HasSensitiveData') {
+            const complianceQ = document.getElementById('compliance-question');
+            if(e.target.value === 'yes') {
+                complianceQ.classList.remove('hidden');
+            } else {
+                complianceQ.classList.add('hidden');
+            }
+        }
+        if(e.target.name === 'AutomatedTests') {
+            const testFreqQ = document.getElementById('test-frequency-question');
+            if(e.target.value === 'yes') {
+                testFreqQ.classList.remove('hidden');
+            } else {
+                testFreqQ.classList.add('hidden');
+            }
+        }
+    });
+
+    function getRadioValue(name) {
+        const inputs = document.getElementsByName(name);
+        for(let i=0; i<inputs.length; i++){
+            if(inputs[i].checked){
+                return inputs[i].value;
+            }
+        }
+        return null; // not answered
+    }
+
+    function computeRecommendations() {
+        // Gather answers
+        const Answers = {
+            ProjectType:         getRadioValue('ProjectType'),
+            ReleaseMethod:       getRadioValue('ReleaseMethod'),
+            TestStakeholders:    getRadioValue('TestStakeholders'),
+            HasClientIntegration:getRadioValue('HasClientIntegration'),
+            NumberOfClients:     getRadioValue('NumberOfClients'),
+            DataUsage:           getRadioValue('DataUsage'),
+            HasSensitiveData:    getRadioValue('HasSensitiveData'),
+            ComplianceType:      getRadioValue('ComplianceType'),
+            InfraSimilarity:     getRadioValue('InfraSimilarity'),
+            Hosting:             getRadioValue('Hosting'),
+            AutomatedBuilds:     getRadioValue('AutomatedBuilds'),
+            AutomatedTests:      getRadioValue('AutomatedTests'),
+            TestFrequency:       getRadioValue('TestFrequency'),
+            RestrictedAccess:    getRadioValue('RestrictedAccess'),
+            AuditRequirements:   getRadioValue('AuditRequirements'),
+            CostSensitive:       getRadioValue('CostSensitive'),
+            OnDemandEnvs:        getRadioValue('OnDemandEnvs'),
+            NonProdMonitoring:   getRadioValue('NonProdMonitoring'),
+            MaintenanceSchedule: getRadioValue('MaintenanceSchedule'),
+            MissionCritical:     getRadioValue('MissionCritical'),
+            RollbackPlan:        getRadioValue('RollbackPlan'),
+            ReleaseCadence:      getRadioValue('ReleaseCadence'),
+            DefectTolerance:     getRadioValue('DefectTolerance'),
+            FunctionalTesting:   getRadioValue('FunctionalTesting'),
+            NonFunctionalTesting:getRadioValue('NonFunctionalTesting')
+        };
+
+        // Dictionary to store reasons for each environment
+        const recommendationReasons = {
+            'Dev': [],
+            'Test': [],
+            'UAT': [],
+            'Pre-Prod': [],
+            'Prod': [],
+            'Client Integration': []
+        };
+
+        // --- PROD (always recommended) ---
+        recommendationReasons['Prod'].push("Production environment is required for serving end users.");
+
+        // --- DEV ---
+        if(["A","B","C"].includes(Answers.ProjectType)){
+            recommendationReasons['Dev'].push(
+                "You have active development or configuration changes, requiring a dedicated Dev environment."
+            );
+        }
+
+        // --- TEST ---
+        if(["B","C"].includes(Answers.TestStakeholders)){
+            recommendationReasons['Test'].push("Dedicated QA or test team requires a separate Test environment.");
+        }
+        if(Answers.AutomatedTests === 'yes'){
+            recommendationReasons['Test'].push("Automated testing pipeline needs a stable Test environment.");
+        }
+        if(Answers.HasSensitiveData === 'yes'){
+            recommendationReasons['Test'].push("Handling sensitive data necessitates isolating tests from Dev.");
+        }
+
+        switch(Answers.FunctionalTesting){
+            case 'A':
+                recommendationReasons['Test'].push("Minimal functional testing still benefits from a dedicated Test environment for controlled checks.");
+                break;
+            case 'B':
+                recommendationReasons['Test'].push("Regression testing is best handled in a dedicated Test environment before UAT/Prod.");
+                break;
+            case 'C':
+                recommendationReasons['Test'].push("Regression + progression testing typically requires a stable, isolated Test environment.");
+                break;
+            // case 'D': No dedicated functional testing => might remove reasons, but we keep any from QA or sensitive data
+        }
+
+        // --- UAT ---
+        if(Answers.TestStakeholders === 'C'){
+            recommendationReasons['UAT'].push("Business/end-users participate in acceptance testing, requiring a UAT environment.");
+        } else if(Answers.FunctionalTesting === 'C'){
+            recommendationReasons['UAT'].push("Progression testing with end-user involvement often suggests a dedicated UAT environment.");
+        }
+
+        // --- Pre-Prod ---
+        // Non-functional tests might require near-prod environment
+        let needsNearProdForTesting = false;
+        switch(Answers.NonFunctionalTesting){
+            case 'B': // Performance
+            case 'C': // Soak
+            case 'D': // Security
+            case 'E': // Multiple
+            case 'F': // All
+                needsNearProdForTesting = true;
+                break;
+            default:
+                needsNearProdForTesting = false;
+        }
+
+        if(
+            Answers.InfraSimilarity === 'B' ||
+            Answers.MissionCritical === 'yes' ||
+            Answers.RollbackPlan === 'yes' ||
+            Answers.NonProdMonitoring === 'B' ||
+            needsNearProdForTesting
+        ){
+            recommendationReasons['Pre-Prod'].push(
+                "You require a near-production environment (Pre-Prod) for final validation, advanced testing (performance/soak/security), or rollback strategy."
+            );
+        }
+
+        // --- Client Integration ---
+        if(Answers.HasClientIntegration === 'yes'){
+            recommendationReasons['Client Integration'].push(
+                "External clients/partners need a separate environment for integration testing."
+            );
+        }
+
+        // Prepare final HTML output
+        let htmlOutput = "";
+
+        // COST SENSITIVITY NOTES
+        if(Answers.CostSensitive === 'yes'){
+            htmlOutput += "<p class='note'><strong>Cost Sensitivity:</strong> You indicated high cost sensitivity. Consider these options to reduce costs:</p>";
+            if(recommendationReasons['Test'].length > 0 && recommendationReasons['UAT'].length > 0){
+                htmlOutput += "<p class='note'>- Potentially combine 'Test' and 'UAT' into a single environment if user acceptance can be done in Test.</p>";
+            }
+            if(recommendationReasons['Pre-Prod'].length > 0 && Answers.MissionCritical === 'no'){
+                htmlOutput += "<p class='note'>- You might skip 'Pre-Prod' if the system is not mission-critical and advanced testing can be done in Test/UAT.</p>";
+            }
+        }
+
+        // Sensitive Data Notes
+        if(Answers.HasSensitiveData === 'yes'){
+            htmlOutput += "<p class='note'><strong>**Sensitive Data Notice**</strong>: You indicated regulated or sensitive data.<br/>";
+            if(Answers.DataUsage === 'C'){
+                htmlOutput += " - You plan to use full production data in non-Prod, so ensure proper masking or anonymization to avoid compliance breaches.";
+            } else {
+                htmlOutput += ` - Confirm data handling meets ${Answers.ComplianceType} compliance requirements in non-production environments.`;
+            }
+            htmlOutput += "</p>";
+        }
+
+        htmlOutput += "<h2>Recommended Environments & Rationale</h2>";
+
+        // Print environments with reasons
+        for(const env of Object.keys(recommendationReasons)){
+            if(recommendationReasons[env].length > 0){
+                htmlOutput += `<div class="env-title">${env}</div>`;
+                recommendationReasons[env].forEach(reason => {
+                    htmlOutput += `<div class="reason">- ${reason}</div>`;
+                });
+            }
+        }
+
+        const resultDiv = document.getElementById('results');
+        resultDiv.innerHTML = htmlOutput;
+        resultDiv.classList.remove('hidden');
+
+        // Scroll to results
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
