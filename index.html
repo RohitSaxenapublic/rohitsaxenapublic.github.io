@@ -99,16 +99,16 @@
                 <label><input type="radio" name="ReleaseMethod" value="B">Agile (frequent, smaller releases)</label><br/>
                 <label><input type="radio" name="ReleaseMethod" value="C">Continuous Deployment (multiple releases per day)</label><br/>
                 <label><input type="radio" name="ReleaseMethod" value="D">Annual Release (once a year)</label><br/>
-                <label><input type="radio" name="ReleaseMethod" value="E">Dormant / Legacy (no major releases)</label>
+                <label><input type="radio" name="ReleaseMethod" value="E">Dormant / Legacy (no releases)</label>
             </div>
         </div>
     </div>
 
-    <!-- CATEGORY: Risk Tolerance -->
+    <!-- CATEGORY 2: Risk Tolerance -->
     <div class="category">
         <h2>Category 2: Risk Tolerance</h2>
         <div class="question">
-            <label class="question-label">2.1) What is your acceptable failure rate or risk tolerance?</label>
+            <label class="question-label">2.1) What is your acceptable failure rate or risk tolerance in production?</label>
             <div class="answers">
                 <label><input type="radio" name="RiskTolerance" value="low">Low (0-3% failure tolerance)</label><br/>
                 <label><input type="radio" name="RiskTolerance" value="medium">Medium (3-5% failure tolerance)</label><br/>
@@ -117,7 +117,7 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Stakeholders & Usage -->
+    <!-- CATEGORY 3: Stakeholders & Usage -->
     <div class="category">
         <h2>Category 3: Stakeholders & Usage</h2>
         <!-- Test Stakeholders -->
@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Data Management -->
+    <!-- CATEGORY 4: Data Management -->
     <div class="category">
         <h2>Category 4: Data Management</h2>
         <div class="question">
@@ -161,9 +161,10 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Processes & Deployment Pipelines -->
+    <!-- CATEGORY 5: Processes & Deployment Pipelines -->
     <div class="category">
         <h2>Category 5: Processes & Deployment Pipelines</h2>
+        <p class="note">If the release type is <em>Dormant/Legacy</em>, these build/test pipelines may have minimal impact.</p>
         <div class="question">
             <label class="question-label">5.1) Do you plan to have automated CI builds?</label>
             <div class="answers">
@@ -181,9 +182,10 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Governance & Security -->
+    <!-- CATEGORY 6: Governance & Security -->
     <div class="category">
         <h2>Category 6: Governance & Security</h2>
+        <p>This category helps assess if you need stricter environment isolation or audit logs.</p>
         <div class="question">
             <label class="question-label">6.1) Should there be strict access controls (limiting dev/tester access to certain environments)?</label>
             <div class="answers">
@@ -201,9 +203,10 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Cost & Resource Optimization -->
+    <!-- CATEGORY 7: Cost & Resource Optimization -->
     <div class="category">
         <h2>Category 7: Cost & Resource Optimization</h2>
+        <p>Helps us determine if you might want to combine environments to reduce costs.</p>
         <div class="question">
             <label class="question-label">7.1) Is your organization highly cost-sensitive (fewer, consolidated environments)?</label>
             <div class="answers">
@@ -218,12 +221,14 @@
                 <label><input type="radio" name="OnDemandEnvs" value="yes">Yes</label><br/>
                 <label><input type="radio" name="OnDemandEnvs" value="no">No</label>
             </div>
+            <p class="note">If yes, consider connecting with your Environment Team to build automation that provisions and terminates these environments on demand.</p>
         </div>
     </div>
 
-    <!-- CATEGORY: Monitoring & Maintenance -->
+    <!-- CATEGORY 8: Monitoring & Maintenance -->
     <div class="category">
         <h2>Category 8: Monitoring & Maintenance</h2>
+        <p>Helps determine if you need near-prod monitoring or a stable patching process for each environment.</p>
         <div class="question">
             <label class="question-label">8.1) Which monitoring strategy do you prefer for non-prod environments?</label>
             <div class="answers">
@@ -239,10 +244,11 @@
                 <label><input type="radio" name="MaintenanceSchedule" value="yes">Yes</label><br/>
                 <label><input type="radio" name="MaintenanceSchedule" value="no">No</label>
             </div>
+            <p class="note">Regardless of yes/no, consider conducting patching activities in Test or Pre-Prod before rolling into Production.</p>
         </div>
     </div>
 
-    <!-- CATEGORY: Risk Management -->
+    <!-- CATEGORY 9: Risk Management -->
     <div class="category">
         <h2>Category 9: Risk Management</h2>
         <div class="question">
@@ -262,25 +268,12 @@
         </div>
     </div>
 
-    <!-- CATEGORY: Success Measures -->
+    <!-- CATEGORY 10: Testing Requirements -->
     <div class="category">
-        <h2>Category 10: Success Measures</h2>
-        <div class="question">
-            <label class="question-label">10.1) How tolerant is the business towards production defects? (This can also overlap with Risk Tolerance.)</label>
-            <div class="answers">
-                <label><input type="radio" name="DefectTolerance" value="A">Low tolerance (critical issues must be prevented)</label><br/>
-                <label><input type="radio" name="DefectTolerance" value="B">Moderate tolerance (some minor bugs acceptable)</label><br/>
-                <label><input type="radio" name="DefectTolerance" value="C">Higher tolerance (fast-paced dev is priority)</label>
-            </div>
-        </div>
-    </div>
-
-    <!-- CATEGORY 11: Testing Requirements -->
-    <div class="category">
-        <h2>Category 11: Testing Requirements</h2>
+        <h2>Category 10: Testing Requirements</h2>
         <!-- Functional Testing -->
         <div class="question">
-            <label class="question-label">11.1) Which functional testing approach do you plan to perform?</label>
+            <label class="question-label">10.1) Which functional testing approach do you plan to perform?</label>
             <div class="answers">
                 <label><input type="radio" name="FunctionalTesting" value="A">Minimal (ad-hoc or smoke tests)</label><br/>
                 <label><input type="radio" name="FunctionalTesting" value="B">Regression only</label><br/>
@@ -291,7 +284,7 @@
 
         <!-- Non-Functional Testing -->
         <div class="question">
-            <label class="question-label">11.2) Which non-functional testing do you plan? (Choose the primary focus)</label>
+            <label class="question-label">10.2) Which non-functional testing do you plan? (Choose the primary focus)</label>
             <div class="answers">
                 <label><input type="radio" name="NonFunctionalTesting" value="A">None</label><br/>
                 <label><input type="radio" name="NonFunctionalTesting" value="B">Performance testing (load/stress)</label><br/>
@@ -338,7 +331,6 @@
             MaintenanceSchedule: getRadioValue('MaintenanceSchedule'),
             MissionCritical:     getRadioValue('MissionCritical'),
             RollbackPlan:        getRadioValue('RollbackPlan'),
-            DefectTolerance:     getRadioValue('DefectTolerance'),
             FunctionalTesting:   getRadioValue('FunctionalTesting'),
             NonFunctionalTesting:getRadioValue('NonFunctionalTesting')
         };
@@ -357,22 +349,19 @@
         recommendationReasons['Prod'].push("Production environment is required for serving end users.");
 
         //--- Determine if Dev is recommended ---
-        // (1) If ProjectType in {A,B,C} and ReleaseMethod != E => Dev
-        // (2) Otherwise no Dev
         let recommendDev = false;
+        // If ProjectType ∈ {A,B,C} AND ReleaseMethod ≠ E => Dev
         if((Answers.ProjectType === 'A' || Answers.ProjectType === 'B' || Answers.ProjectType === 'C')
            && Answers.ReleaseMethod !== 'E') {
             recommendDev = true;
             recommendationReasons['Dev'].push("Active development or enhancements require a dedicated Dev environment.");
         }
 
-        //--- If no Dev => no Test, no UAT, but Pre-Prod is mandatory ---
+        //--- If no Dev => no Test or UAT, but Pre-Prod is mandatory ---
         let noDev = !recommendDev;
         if(noDev) {
-            // Remove any potential reasons for Test or UAT
             recommendationReasons['Test'] = [];
             recommendationReasons['UAT'] = [];
-            // Pre-Prod is mandatory
             recommendationReasons['Pre-Prod'].push("No Dev environment present; need Pre-Prod for staging/validation.");
         }
 
@@ -382,38 +371,31 @@
         }
 
         //--- Risk Tolerance-based logic ---
-        //   Low (0-3%) => UAT + Pre-Prod mandatory
-        //   Medium (3-5%) => Test + Pre-Prod mandatory
-        //   High (5%+) => skip mandatory Test/UAT/Pre-Prod (unless forced by other logic)
+        //   Low => UAT + Pre-Prod mandatory
+        //   Medium => Test + Pre-Prod mandatory
+        //   High => no forced Test/UAT/Pre-Prod from risk alone
         if(Answers.RiskTolerance === 'low') {
             recommendationReasons['UAT'].push("Low risk tolerance requires rigorous acceptance testing (UAT).");
-            recommendationReasons['Pre-Prod'].push("Low risk tolerance demands a final pre-production environment to avoid failures in Prod.");
+            recommendationReasons['Pre-Prod'].push("Low risk tolerance demands a final pre-production environment.");
         } else if(Answers.RiskTolerance === 'medium') {
             recommendationReasons['Test'].push("Medium risk tolerance requires structured testing in a dedicated Test environment.");
             recommendationReasons['Pre-Prod'].push("Medium risk tolerance mandates a Pre-Prod for final validation.");
-        } else if(Answers.RiskTolerance === 'high') {
-            // High risk tolerance => no forced Test/UAT/Pre-Prod from risk perspective
-            // We'll keep other rules though
+        } else {
+            // riskTolerance = high => no forced environment from risk alone
         }
 
-        //--- Release Method logic => if in {A,B,C,D} => Test is mandatory (unless risk is high which might skip)
-        //   But we only apply it if Dev is recommended or if the user specifically wants test in annual releases
-        if(!noDev) {
-            if(['A','B','C','D'].includes(Answers.ReleaseMethod)) {
-                // If riskTolerance != 'high', then we consider test mandatory
-                if(Answers.RiskTolerance !== 'high') {
-                    recommendationReasons['Test'].push("Release method requires a Test environment for structured validation.");
-                }
+        //--- Release Method => if in {A,B,C,D} => Test is mandatory (unless risk is high or no dev)
+        if(!noDev && ['A','B','C','D'].includes(Answers.ReleaseMethod)) {
+            if(Answers.RiskTolerance !== 'high') {
+                recommendationReasons['Test'].push("Release method requires a Test environment for structured validation.");
             }
-        } else {
-            // noDev case => we've already removed Test/UAT logic
         }
 
         //--- Functional Testing logic ---
-        // A: Minimal => prefer a Test environment
-        // B: Regression => Test mandatory
-        // C: Regression+Progression => Test + UAT mandatory
-        // D: No functional => skip Test/UAT
+        // A => minimal => prefer Test
+        // B => regression => Test mandatory
+        // C => regression+progression => Test + UAT mandatory
+        // D => none => skip test/uat
         if(!noDev) {
             switch(Answers.FunctionalTesting) {
                 case 'A':
@@ -424,11 +406,10 @@
                     break;
                 case 'C':
                     recommendationReasons['Test'].push("Regression + progression testing requires thorough validation in Test.");
-                    recommendationReasons['UAT'].push("Progression testing also involves end-users, making UAT mandatory.");
+                    recommendationReasons['UAT'].push("Progression testing with end-users means UAT is mandatory.");
                     break;
                 case 'D':
                     // No functional testing => skip
-                    // (But if risk or other logic forces test, we keep it)
                     break;
             }
         }
@@ -446,7 +427,7 @@
 
         //--- Mission Critical => Pre-Prod
         if(Answers.MissionCritical === 'yes') {
-            recommendationReasons['Pre-Prod'].push("Mission-critical application: Pre-Prod needed to reduce risks before Production.");
+            recommendationReasons['Pre-Prod'].push("Mission-critical app: Pre-Prod needed to reduce risk before Production.");
         }
 
         //--- Rollback Plan => Pre-Prod
@@ -454,14 +435,12 @@
             recommendationReasons['Pre-Prod'].push("Rollback strategy requires testing upgrades in Pre-Prod first.");
         }
 
-        //--- If user has sensitive data => might justify a separate Test env (already considered),
-        //    just add a note
+        //--- Sensitive Data => isolate tests
         if(Answers.HasSensitiveData === 'yes') {
             recommendationReasons['Test'].push("Sensitive/regulated data often tested in an isolated environment to ensure compliance.");
         }
 
-        //--- Final pass: If dev is not recommended => forcibly empty out Test/UAT reasons
-        //    because "No Dev => No Test, No UAT" rule overrides everything
+        //--- Final pass: If noDev => forcibly empty out Test/UAT
         if(noDev) {
             recommendationReasons['Test'] = [];
             recommendationReasons['UAT'] = [];
@@ -470,17 +449,16 @@
         //--- Build final HTML output ---
         let htmlOutput = "";
 
-        // COST SENSITIVITY
+        // COST SENSITIVITY note
         if(Answers.CostSensitive === 'yes') {
-            htmlOutput += "<p class='note'><strong>Cost Sensitivity:</strong> You indicated high cost sensitivity. Consider combining Test/UAT or skipping Pre-Prod if feasible, but these are risk trade-offs.</p>";
+            htmlOutput += "<p class='note'><strong>Cost Sensitivity:</strong> Consider combining certain environments if risk allows.</p>";
         }
 
-        // SENSITIVE DATA NOTE
+        // SENSITIVE DATA note
         if(Answers.HasSensitiveData === 'yes') {
             htmlOutput += "<p class='note'><strong>**Sensitive Data Notice**</strong>: Ensure data masking or anonymization in non-production environments to meet compliance requirements.</p>";
         }
 
-        // Generate environment recommendations
         htmlOutput += "<h2>Recommended Environments & Rationale</h2>";
         for(const env in recommendationReasons) {
             if(recommendationReasons[env].length > 0) {
