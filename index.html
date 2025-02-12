@@ -30,6 +30,21 @@
       font-size: 1.1em;
       line-height: 1.5;
     }
+    /* Overview Section */
+    .overview {
+      background: #e8f4fd;
+      border: 1px solid #b6d4f1;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .overview h2 {
+      margin-top: 0;
+      font-size: 1.3em;
+    }
+    .overview ul {
+      margin: 10px 0 10px 20px;
+    }
     /* Category (Card) Styles */
     .category {
       margin: 20px 0;
@@ -126,12 +141,38 @@
 
 <div class="container">
   <h1>IT Environment Needs Calculator</h1>
+  
+  <!-- Overview Summary -->
+  <div class="overview">
+    <h2>Overview</h2>
+    <p>
+      I’m excited to share a new tool we’ve developed – the <strong>IT Environment Needs Calculator</strong>. This interactive web-based tool is designed to help us determine the optimal IT environments required for our projects.
+    </p>
+    <p>
+      <strong>Objective:</strong> The primary goal of the calculator is to guide us in assessing our environment setup needs based on several key factors, including:
+    </p>
+    <ul>
+      <li><strong>Project & Release Type:</strong> Understand whether we're dealing with new development, enhancements, or legacy systems.</li>
+      <li><strong>Risk & Compliance:</strong> Evaluate acceptable failure rates and compliance requirements, especially when sensitive or regulated data is involved.</li>
+      <li><strong>Stakeholder & Testing Requirements:</strong> Identify who will be involved in testing and whether specialized environments (like for client integration) are necessary.</li>
+      <li><strong>Cost & Resource Optimization:</strong> Consider cost sensitivities and the possibility of on-demand environments.</li>
+      <li><strong>Operational Readiness:</strong> Plan for robust rollback strategies, monitoring, and scheduled maintenance.</li>
+    </ul>
+    <p>
+      By answering a series of targeted questions, the tool generates recommendations—complete with rationale—on whether we should have environments such as Development, Testing, UAT, Pre-Production, Production, and even Client Integration setups. This structured approach is intended to streamline our decision-making process and ensure that our environment strategy aligns with both our project needs and industry best practices.
+    </p>
+    <p>
+      I invite you to explore the tool and provide your feedback. I believe it will be a valuable asset in planning our IT infrastructure and ensuring consistency across our projects.
+    </p>
+  </div>
+  
   <p>Please answer the questions below. When finished, click <strong>Compute Recommendations</strong>.</p>
 
   <div id="form-container">
     <!-- CATEGORY 1: Purpose & Objectives -->
     <div class="category" id="category1">
       <h2>Category 1: Purpose & Objectives</h2>
+      <!-- Question 1.1 -->
       <div class="question">
         <label class="question-label">1.1) What type of project/application is this?</label>
         <div class="answers">
@@ -141,14 +182,15 @@
           <label><input type="radio" name="ProjectType" value="D"> No Development (Using existing system without customization)</label>
         </div>
       </div>
+      <!-- Question 1.2 -->
       <div class="question">
         <label class="question-label">1.2) What is your release methodology?</label>
         <div class="answers">
-          <label><input type="radio" name="ReleaseMethod" value="A"> Traditional (infrequent, large releases)</label>
-          <label><input type="radio" name="ReleaseMethod" value="B"> Agile (frequent, smaller releases)</label>
-          <label><input type="radio" name="ReleaseMethod" value="C"> Continuous Deployment (multiple releases per day)</label>
-          <label><input type="radio" name="ReleaseMethod" value="D"> Annual Release (once a year)</label>
-          <label><input type="radio" name="ReleaseMethod" value="E"> Dormant / Legacy (no releases)</label>
+          <label class="release-option" data-release="A"><input type="radio" name="ReleaseMethod" value="A"> Traditional (infrequent, large releases)</label>
+          <label class="release-option" data-release="B"><input type="radio" name="ReleaseMethod" value="B"> Agile (frequent, smaller releases)</label>
+          <label class="release-option" data-release="C"><input type="radio" name="ReleaseMethod" value="C"> Continuous Deployment (multiple releases per day)</label>
+          <label class="release-option" data-release="D"><input type="radio" name="ReleaseMethod" value="D"> Annual Release (once a year)</label>
+          <label class="release-option" data-release="E"><input type="radio" name="ReleaseMethod" value="E"> Dormant / Legacy (no releases)</label>
         </div>
       </div>
     </div>
@@ -360,7 +402,7 @@
     return null;
   }
 
-  // Dynamically show/hide questions based on user selections
+  // Update visibility for dynamic elements
   function updateVisibility() {
     const releaseMethod = getRadioValue('ReleaseMethod');
     const projectType = getRadioValue('ProjectType');
@@ -397,6 +439,33 @@
       complianceQuestion.classList.remove('hidden');
     } else {
       complianceQuestion.classList.add('hidden');
+    }
+    
+    // Update Release Method options based on Project Type
+    updateReleaseMethodOptions();
+  }
+
+  // Update Release Method options: If ProjectType is 'D' (No Development), show only Dormant / Legacy option.
+  function updateReleaseMethodOptions() {
+    const projectType = getRadioValue('ProjectType');
+    const releaseOptions = document.querySelectorAll('.release-option');
+    if (projectType === 'D') {
+      releaseOptions.forEach(function(label) {
+        if (label.getAttribute('data-release') !== 'E') {
+          label.style.display = 'none';
+        } else {
+          label.style.display = 'block';
+          // Automatically select Dormant / Legacy if not already selected.
+          const radioInput = label.querySelector('input[type="radio"]');
+          if (!radioInput.checked) {
+            radioInput.checked = true;
+          }
+        }
+      });
+    } else {
+      releaseOptions.forEach(function(label) {
+        label.style.display = 'block';
+      });
     }
   }
 
@@ -513,7 +582,11 @@
     // Non-functional Testing logic
     let needsNearProdForTesting = false;
     switch (Answers.NonFunctionalTesting) {
-      case 'B': case 'C': case 'D': case 'E': case 'F':
+      case 'B': 
+      case 'C': 
+      case 'D': 
+      case 'E': 
+      case 'F':
         needsNearProdForTesting = true;
         break;
     }
